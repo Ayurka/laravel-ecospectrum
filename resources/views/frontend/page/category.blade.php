@@ -1,0 +1,16 @@
+@extends('frontend.layouts.app')
+
+@section('content')
+    <div class="container">
+        <div class="row">
+            <div class="col">{{ Breadcrumbs::render('page', $model) }}</div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <h1 class="h1-title">{{ $model->title }}</h1>
+                <hr>
+                {!! $model->description !!}
+            </div>
+        </div>
+    </div>
+@endsection

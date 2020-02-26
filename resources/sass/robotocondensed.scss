@@ -1,0 +1,37 @@
+$fa-font-path: '../fonts/robotocondensed';
+@font-face {
+    font-family: 'Roboto Condensed';
+    src: local('Roboto Condensed Light'), local('RobotoCondensed-Light'), url('#{$fa-font-path}/Robotocondensedlight.woff2') format('woff2'), url('#{$fa-font-path}/Robotocondensedlight.woff') format('woff'), url('#{$fa-font-path}/Robotocondensedlight.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Roboto Condensed';
+    src: local('Roboto Condensed Light Italic'), local('RobotoCondensed-LightItalic'), url('#{$fa-font-path}/Robotocondensedlightitalic.woff2') format('woff2'), url('#{$fa-font-path}/Robotocondensedlightitalic.woff') format('woff'), url('#{$fa-font-path}/Robotocondensedlightitalic.ttf') format('truetype');
+    font-weight: 300;
+    font-style: italic;
+}
+@font-face {
+    font-family: 'Roboto Condensed';
+    src: local('Roboto Condensed'), local('RobotoCondensed-Regular'), url('#{$fa-font-path}/Robotocondensed.woff2') format('woff2'), url('#{$fa-font-path}/Robotocondensed.woff') format('woff'), url('#{$fa-font-path}/Robotocondensed.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Roboto Condensed';
+    src: local('Roboto Condensed Italic'), local('RobotoCondensed-Italic'), url('#{$fa-font-path}/Robotocondenseditalic.woff2') format('woff2'), url('#{$fa-font-path}/Robotocondenseditalic.woff') format('woff'), url('#{$fa-font-path}/Robotocondenseditalic.ttf') format('truetype');
+    font-weight: 400;
+    font-style: italic;
+}
+@font-face {
+    font-family: 'Roboto Condensed';
+    src: local('Roboto Condensed Bold'), local('RobotoCondensed-Bold'), url('#{$fa-font-path}/Robotocondensedbold.woff2') format('woff2'), url('#{$fa-font-path}/Robotocondensedbold.woff') format('woff'), url('#{$fa-font-path}/Robotocondensedbold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Roboto Condensed';
+    src: local('Roboto Condensed Bold Italic'), local('RobotoCondensed-BoldItalic'), url('#{$fa-font-path}/Robotocondensedbolditalic.woff2') format('woff2'), url('#{$fa-font-path}/Robotocondensedbolditalic.woff') format('woff'), url('#{$fa-font-path}/Robotocondensedbolditalic.ttf') format('truetype');
+    font-weight: 700;
+    font-style: italic;
+}
