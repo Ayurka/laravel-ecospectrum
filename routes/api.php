@@ -35,4 +35,5 @@ Route::group(['middleware' => 'cors','namespace' => 'Api'], function () {
     });
 
     Route::get('products', ['as' => 'products', 'uses' => 'ProductController@index']);
+    Route::get('page/{slug}', ['as' => 'page', 'uses' => 'PageController@show']);
 });
