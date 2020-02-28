@@ -77,11 +77,12 @@ class Product extends Model
 
     public function image()
     {
-        return $this->morphOne('App\Models\Backend\Image', 'imagetable')->where('primary', 0);
+        return $this->morphOne('App\Models\Backend\Image', 'imagetable')->where('position', 0)->select('small');
     }
 
     public function images()
     {
-        return $this->morphMany('App\Models\Backend\Image', 'imagetable')->where('primary', 0)->orderBy('position', 'asc');
+        return $this->morphMany('App\Models\Backend\Image', 'imagetable')
+            ->orderBy('position', 'asc');
     }
 }

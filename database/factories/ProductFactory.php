@@ -7,11 +7,11 @@ use Faker\Generator as Faker;
 
 $factory->define(Product::class, function (Faker $faker) {
     return [
-        'title' => $faker->title,
+        'title' => $faker->realText($maxNbChars = 30, $indexSize = 2),
         'slug' => $faker->slug,
         'model' => $faker->postcode,
         'price' => $faker->numberBetween(1000, 5000),
-        'description' => $faker->text,
+        'description' => $faker->realText($maxNbChars = 200, $indexSize = 2),
         'quantity' => $faker->numberBetween(50, 500),
         'public' => 1
     ];

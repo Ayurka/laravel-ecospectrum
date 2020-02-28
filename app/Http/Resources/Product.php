@@ -18,8 +18,10 @@ class Product extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
+            'slug' => $this->slug,
             'price' => $this->price,
-            'image' => $this->image ? env('APP_URL') . Storage::url($this->image->url) : ''
+            'images' => $this->images,
+            'description' => $this->description
         ];
     }
 }

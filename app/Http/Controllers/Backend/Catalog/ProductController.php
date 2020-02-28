@@ -59,7 +59,6 @@ class ProductController extends Controller
         $model->getPivotFilters()->sync($request->get('filters'));
         $this->model->pivotAttributeProduct($request, $model);
 
-        $image->setImage($model, $request);
         $image->setImages($model, $request);
 
         return redirect()->route('admin.product.index')->with('flash_success', 'Товар успешно создан');
@@ -81,10 +80,6 @@ class ProductController extends Controller
         $filters = $this->model->getDataFilters($product)->content();
         $attributeGroups = $this->model->getAttributeGroups();
         $attributeGroupsJson = $attributeGroups;
-
-        /*$img = $product->image;
-        $initialPreviewFirst = $image->getInitialPreviewFirst($img);
-        $initialPreviewConfigFirst = $image->getInitialPreviewConfigFirst($img);*/
 
         $preview = $image->getConfigImages($product->images);
 

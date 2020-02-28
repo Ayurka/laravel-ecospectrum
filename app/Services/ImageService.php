@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Backend\Image;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Request;
 use Intervention\Image\Facades\Image as ImageInt;
@@ -21,11 +22,37 @@ class ImageService
     {
         $modelName = class_basename($model);
 
-        if ($request->hasfile('images')) {
-            foreach ($request->file('images') as $image) {
-                $path = Storage::disk('public')->putFile($modelName . '/' .  $model->id, $image);
+        $cropImage = config('cropImage');
 
-                $model->image()->create(['url' => $path]);
+        if ($request->hasfile('images')) {
+            foreach ($request->file('images') as $key => $image) {
+
+                $images = [];
+
+                foreach ($cropImage as $key => $crop) {
+                    $interventionImage = ImageInt::make($image);
+                    $interventionImage->fit($crop['width'], $crop['height'], function ($constraint) {
+                        $constraint->aspectRatio();
+                    })->encode('jpg');
+
+                    $now = Carbon::now()->toDateTimeString();
+                    $hash = md5($interventionImage->__toString().$now);
+
+                    $imageHash = "{$hash}.jpg";
+
+                    $path = $modelName . '/' . $model->id . '/' . $crop['width'] . 'x' . $crop['height'] . '/' . $imageHash;
+
+                    Storage::disk('public')->put($path, $interventionImage->__toString());
+
+                    $images[$key] = $path;
+                }
+
+                $model->image()->create([
+                    'position' => $key,
+                    'small' => url('') . Storage::url($images['small']),
+                    'medium' => url('') . Storage::url($images['medium']),
+                    'large' => url('') . Storage::url($images['large']),
+                ]);
             }
         }
 
@@ -62,9 +89,9 @@ class ImageService
 
         if ($images) {
             foreach ($images as $image) {
-                $config['initialPreview'][] = asset('storage/' . $image->url);
+                $config['initialPreview'][] = $image->large;
                 $config['initialPreviewConfig'][] = [
-                    'caption' => $image->url,
+                    'caption' => $image->small,
                     'url' => route('admin.image_delete', $image->id),
                     'key' => $image->id
                 ];
@@ -107,7 +134,7 @@ class ImageService
         $image = Image::find($id);
         $image->delete();
 
-        Storage::disk('public')->delete($image->url);
+        Storage::disk('public')->delete($image->small);
 
         return response('200');
     }

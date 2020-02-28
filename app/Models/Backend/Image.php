@@ -14,7 +14,7 @@ class Image extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'url', 'imagetable_id', 'imagetable_type', 'primary', 'position'
+        'url', 'imagetable_id', 'imagetable_type', 'primary', 'position', 'small', 'medium', 'large'
     ];
 
     public function imagetable()

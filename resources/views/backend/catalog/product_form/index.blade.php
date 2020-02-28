@@ -36,7 +36,7 @@
                             @foreach($products as $product)
                                 <tr>
                                     <td>{{ $product->id }}</td>
-                                    <td><img src="{{ $product->image ? $product->image->resize(64, 64) : '/images/no-photo.png' }}" alt="" class="img-thumbnail" width="64"></td>
+                                    <td><img src="{!! $product->image['small'] !!}" width="50" alt=""></td>
                                     <td>{{ $product->title }}</td>
                                     <td>{{ $product->getCategory ? $product->getCategory['title'] : 'Без категории' }}</td>
                                     <td>{{ $product->price . ' руб.' }}</td>

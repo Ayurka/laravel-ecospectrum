@@ -17,8 +17,9 @@ class CreateImagesTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('imagetable_id');
             $table->string('imagetable_type');
-            $table->string('url');
-            $table->integer('primary')->default(0);
+            $table->string('small');
+            $table->string('medium');
+            $table->string('large');
             $table->integer('position')->default(0);
         });
     }
