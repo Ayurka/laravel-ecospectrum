@@ -19,7 +19,7 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
     {
@@ -30,7 +30,7 @@ class ProductController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function create()
     {
@@ -56,7 +56,8 @@ class ProductController extends Controller
      *
      * @param ProductRequest $request
      * @param ImageService $image
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(ProductRequest $request, ImageService $image)
     {
@@ -76,9 +77,10 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param $id
      * @param ImageService $image
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function edit($id, ImageService $image)
     {
@@ -109,9 +111,10 @@ class ProductController extends Controller
      * Update the specified resource in storage.
      *
      * @param ProductRequest $request
-     * @param  int  $id
+     * @param $id
      * @param ImageService $image
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(ProductRequest $request, $id, ImageService $image)
     {
@@ -131,9 +134,10 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param $id
      * @param ImageService $image
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy($id, ImageService $image)
     {
