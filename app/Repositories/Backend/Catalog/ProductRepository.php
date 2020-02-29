@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Backend\Catalog;
 
+use App\Models\Backend\Attribute;
 use App\Models\Backend\AttributeGroup;
 use App\Models\Backend\Category;
 use App\Models\Backend\Filter;
@@ -235,5 +236,15 @@ class ProductRepository implements CrudRepositoryInterface
     {
         $model = $this->show($id);
         $model->url()->delete();
+    }
+
+    public function isAttributes ()
+    {
+        $attributes = Attribute::all();
+        if (count($attributes)) {
+            return true;
+        }
+
+        return false;
     }
 }

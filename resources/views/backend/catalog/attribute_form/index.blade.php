@@ -42,7 +42,7 @@
                                         @endforeach
                                     </td>
                                     <td>
-                                        <a href="{{ route('admin.attribute.edit', ['id' => $group->id]) }}" data-toggle="tooltip" data-placement="top" title="" data-original-title="Редактировать" class="m-r-10 text-dark">
+                                        <a href="{{ route('admin.attribute.edit', $group->id) }}" data-toggle="tooltip" data-placement="top" title="" data-original-title="Редактировать" class="m-r-10 text-dark">
                                             <i class="icofont icofont-ui-edit"></i>
                                         </a>
                                         <form action="{{ route('admin.attribute.destroy', $group->id)}}" method="post" style="display: inline-block;">

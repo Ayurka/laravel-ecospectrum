@@ -3,6 +3,7 @@
         vertical-align: middle;
     }
 </style>
+@if($isAttributes)
 <table class="table table-bordered product-attr">
     <thead>
     <tr>
@@ -12,29 +13,30 @@
     </tr>
     </thead>
     <tbody>
-    @if(!empty($product->getPivotAttributes) && !empty($attributeGroups))
-        @php $i = 0; @endphp
-        @foreach($product->getPivotAttributes as $attribute)
-            <tr class="count_old">
-                <td style="width: 20%;">
-                    <select class="attribute_product_old col-sm-12" name="attribute_product[{{ $i }}][id]">
-                        @foreach($attributeGroups as $group)
-                            <optgroup label="{{ $group['text'] }}">
-                                @foreach($group['children'] as $attr)
-                                    <option value="{{ $attr['id'] }}" {{ ($attribute->id == $attr['id']) ? 'selected' : '' }}>{{ $attr['text'] }}</option>
-                                @endforeach
-                            </optgroup>
-                        @endforeach
-                    </select>
-                </td>
-                <td style="width: 70%;"><textarea class="form-control" rows="3" name="attribute_product[{{ $i }}][text]">{{ $attribute->pivot->text }}</textarea></td>
-                <td style="width: 10%;" class="text-center"><button type="button" class="btn btn-danger btn-sm text-white btn-delete"><i class="fas fa-trash-alt"></i></button></td>
-            </tr>
-            @php $i++; @endphp
-        @endforeach
-        </tbody>
-    @endif
+    @php $i = 0; @endphp
+    @foreach($product->getPivotAttributes as $attribute)
+        <tr class="count_old">
+            <td style="width: 20%;">
+                <select class="attribute_product_old col-sm-12" name="attribute_product[{{ $i }}][id]">
+                    @foreach($attributeGroups as $group)
+                        <optgroup label="{{ $group['text'] }}">
+                            @foreach($group['children'] as $attr)
+                                <option value="{{ $attr['id'] }}" {{ ($attribute->id == $attr['id']) ? 'selected' : '' }}>{{ $attr['text'] }}</option>
+                            @endforeach
+                        </optgroup>
+                    @endforeach
+                </select>
+            </td>
+            <td style="width: 70%;"><textarea class="form-control" rows="3" name="attribute_product[{{ $i }}][text]">{{ $attribute->pivot->text }}</textarea></td>
+            <td style="width: 10%;" class="text-center"><button type="button" class="btn btn-danger btn-sm text-white btn-delete"><i class="fas fa-trash-alt"></i></button></td>
+        </tr>
+        @php $i++; @endphp
+    @endforeach
+    </tbody>
 </table>
+@else
+    <p>Нет параметров</p>
+@endif
 @push('after-styles')
     {{--Select 2 css--}}
     <link rel="stylesheet" href="{{ asset('packages/adminty/bower_components/select2/css/select2.min.css') }}">

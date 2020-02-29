@@ -36,6 +36,7 @@ class ProductController extends Controller
     {
         $categoryTree = $this->model->getCategoryTree();
         $dataSelect = $this->model->getAllCategories()->content();
+        $isAttributes = $this->model->isAttributes();
         $attributeGroups = $this->model->getAttributeGroups();
         $attributeGroupsJson = response()->json($attributeGroups)->content();
         $filters = $this->model->getAllFilters()->content();
@@ -45,7 +46,8 @@ class ProductController extends Controller
             'dataSelect',
             'attributeGroups',
             'filters',
-            'attributeGroupsJson'
+            'attributeGroupsJson',
+            'isAttributes'
         ));
     }
 
@@ -85,6 +87,7 @@ class ProductController extends Controller
 
         $dataSelect = $this->model->getDataSelect($product)->content();
         $filters = $this->model->getDataFilters($product)->content();
+        $isAttributes = $this->model->isAttributes();
         $attributeGroups = $this->model->getAttributeGroups();
         $attributeGroupsJson = response()->json($attributeGroups)->content();
 
@@ -97,7 +100,8 @@ class ProductController extends Controller
             'filters',
             'attributeGroups',
             'attributeGroupsJson',
-            'preview'
+            'preview',
+            'isAttributes'
         ));
     }
 
