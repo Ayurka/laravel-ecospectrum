@@ -77,7 +77,9 @@ class Product extends Model
 
     public function image()
     {
-        return $this->morphOne('App\Models\Backend\Image', 'imagetable')->where('position', 0)->select('small');
+        return $this->morphOne('App\Models\Backend\Image', 'imagetable')
+            ->where('position', 0)
+            ->select('small');
     }
 
     public function images()

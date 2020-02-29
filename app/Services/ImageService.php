@@ -7,7 +7,6 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Request;
 use Intervention\Image\Facades\Image as ImageInt;
-use Intervention\Image\Response;
 
 class ImageService
 {
@@ -60,26 +59,6 @@ class ImageService
     }
 
     /**
-     * Устанавливаем изображение
-     *
-     * @param $model object
-     * @param \Illuminate\Http\Request
-     * @return object
-     */
-    public function setImage($model, $request)
-    {
-        $modelName = class_basename($model);
-
-        if ($request->hasfile('image')) {
-            $path = Storage::disk('public')->putFile($modelName . '/' .  $model->id, $request->file('image'));
-
-            $model->image()->create(['url' => $path, 'primary' => 1]);
-        }
-
-        return $model;
-    }
-
-    /**
      * @param $images array
      * @return string
      */
@@ -96,28 +75,6 @@ class ImageService
                     'key' => $image->id
                 ];
             }
-        }
-
-        return $this->conf($config);
-    }
-
-    /**
-     * Получаем конфигурацию изображения
-     *
-     * @param \App\Models\Backend\Image
-     * @return string
-     */
-    public function getConfigImage($image)
-    {
-        $config = [];
-
-        if ($image) {
-            $config['initialPreview'][] = asset('storage/' . $image->url);
-            $config['initialPreviewConfig'][] = [
-                'caption' => $image->url,
-                'url' => route('admin.image_delete', $image->id),
-                'key' => $image->id
-            ];
         }
 
         return $this->conf($config);

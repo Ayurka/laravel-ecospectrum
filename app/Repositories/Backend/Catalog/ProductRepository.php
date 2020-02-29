@@ -176,7 +176,7 @@ class ProductRepository implements CrudRepositoryInterface
             }
         }
 
-        return response()->json($data);
+        return $data;
     }
 
     public function getAttributes($group)

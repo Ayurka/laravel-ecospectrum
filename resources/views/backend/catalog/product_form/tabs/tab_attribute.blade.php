@@ -11,7 +11,29 @@
         <th style="width: 10%;" class="text-center"><button type="button" class="btn btn-primary btn-attr-add"><i class="fas fa-plus"></i></button></th>
     </tr>
     </thead>
-    <tbody></tbody>
+    <tbody>
+    @if(!empty($product->getPivotAttributes) && !empty($attributeGroups))
+        @php $i = 0; @endphp
+        @foreach($product->getPivotAttributes as $attribute)
+            <tr class="count_old">
+                <td style="width: 20%;">
+                    <select class="attribute_product_old col-sm-12" name="attribute_product[{{ $i }}][id]">
+                        @foreach($attributeGroups as $group)
+                            <optgroup label="{{ $group['text'] }}">
+                                @foreach($group['children'] as $attr)
+                                    <option value="{{ $attr['id'] }}" {{ ($attribute->id == $attr['id']) ? 'selected' : '' }}>{{ $attr['text'] }}</option>
+                                @endforeach
+                            </optgroup>
+                        @endforeach
+                    </select>
+                </td>
+                <td style="width: 70%;"><textarea class="form-control" rows="3" name="attribute_product[{{ $i }}][text]">{{ $attribute->pivot->text }}</textarea></td>
+                <td style="width: 10%;" class="text-center"><button type="button" class="btn btn-danger btn-sm text-white btn-delete"><i class="fas fa-trash-alt"></i></button></td>
+            </tr>
+            @php $i++; @endphp
+        @endforeach
+        </tbody>
+    @endif
 </table>
 @push('after-styles')
     {{--Select 2 css--}}
@@ -23,11 +45,23 @@
     {{--Custom js--}}
     <script>
         $(function(){
-            var data = JSON.parse('{!! $attributeGroups !!}');
-            var i = 0;
+            let data = JSON.parse('{!! $attributeGroupsJson !!}');
+
+            let count_old, i;
+
+            if (count_old = $('.count_old').length) {
+                i = count_old
+            } else {
+                i = 0;
+            }
+
+            $('.attribute_product_old').select2({
+                theme: 'classic'
+            });
+
             $('.product-attr').on('click', '.btn-attr-add', function(){
 
-                var $this = $(this).closest('.product-attr').find('tbody');
+                let $this = $(this).closest('.product-attr').find('tbody');
 
                 $this.append('' +
                     '<tr class="count_' + i + '">' +

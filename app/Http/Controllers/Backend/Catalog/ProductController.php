@@ -37,9 +37,16 @@ class ProductController extends Controller
         $categoryTree = $this->model->getCategoryTree();
         $dataSelect = $this->model->getAllCategories()->content();
         $attributeGroups = $this->model->getAttributeGroups();
+        $attributeGroupsJson = response()->json($attributeGroups)->content();
         $filters = $this->model->getAllFilters()->content();
 
-        return view('backend.catalog.product_form.create', compact('categoryTree', 'dataSelect', 'attributeGroups', 'filters'));
+        return view('backend.catalog.product_form.create', compact(
+            'categoryTree',
+            'dataSelect',
+            'attributeGroups',
+            'filters',
+            'attributeGroupsJson'
+        ));
     }
 
     /**
@@ -79,7 +86,7 @@ class ProductController extends Controller
         $dataSelect = $this->model->getDataSelect($product)->content();
         $filters = $this->model->getDataFilters($product)->content();
         $attributeGroups = $this->model->getAttributeGroups();
-        $attributeGroupsJson = $attributeGroups;
+        $attributeGroupsJson = response()->json($attributeGroups)->content();
 
         $preview = $image->getConfigImages($product->images);
 
@@ -112,7 +119,6 @@ class ProductController extends Controller
         $model->getPivotFilters()->sync($request->get('filters'));
         $this->model->pivotAttributeProduct($request, $model);
 
-        $image->setImage($model, $request);
         $image->setImages($model, $request);
 
         return redirect()->route('admin.product.index')->with('flash_success', 'Товар успешно обновлен');
