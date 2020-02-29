@@ -21,7 +21,8 @@ class Product extends JsonResource
             'slug' => $this->slug,
             'price' => $this->price,
             'images' => $this->images,
-            'description' => $this->description
+            'description' => $this->description,
+            'attributes' => $this->getPivotAttributes
         ];
     }
 }
