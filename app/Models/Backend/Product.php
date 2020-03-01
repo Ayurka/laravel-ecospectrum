@@ -67,6 +67,7 @@ class Product extends Model
     public function getPivotAttributes()
     {
         return $this->belongsToMany(Attribute::class, 'attribute_product', 'product_id', 'attribute_id')
+            ->select('id', 'attribute_group_id', 'title', 'position')
             ->withPivot('text');
     }
 
