@@ -2,13 +2,26 @@
 
 namespace App\Repositories\Backend\Order;
 
+use App\Models\Backend\Order;
 use App\Repositories\Backend\CrudRepositoryInterface;
 
 class OrderRepository implements CrudRepositoryInterface
 {
+    protected $model;
+
+    public function __construct()
+    {
+        $this->model = new Order();
+    }
+
     public function all()
     {
+        return $this->model->all();
+    }
 
+    public function paginate(int $number)
+    {
+        return $this->model->with('user')->orderBy('created_at', 'desc')->paginate($number);
     }
 
     /*
@@ -33,7 +46,7 @@ class OrderRepository implements CrudRepositoryInterface
      */
     public function delete($id)
     {
-
+        return $this->model->destroy($id);
     }
 
     /*
@@ -41,6 +54,6 @@ class OrderRepository implements CrudRepositoryInterface
      */
     public function show($id)
     {
-
+        return $this->model->findOrFail($id);
     }
 }

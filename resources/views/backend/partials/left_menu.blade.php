@@ -55,6 +55,12 @@
                 </ul>
             </li>
             <li class="">
+                <a href="{{ route('admin.order.index') }}">
+                    <span class="pcoded-micon"><i class="icofont icofont-order"></i></span>
+                    <span class="pcoded-mtext">Заказы</span>
+                </a>
+            </li>
+            <li class="">
                 <a href="{{ route('admin.news.index') }}">
                     <span class="pcoded-micon"><i class="icofont icofont-newspaper"></i></span>
                     <span class="pcoded-mtext">Новости</span>

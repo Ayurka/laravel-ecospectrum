@@ -19,7 +19,7 @@ class CreateProductsTable extends Migration
             $table->string('title');
             $table->string('slug')->nullable();
             $table->string('model')->nullable();
-            $table->decimal('price', 15, 2)->default(0);
+            $table->decimal('price', 15, 0)->default(0);
             $table->text('description')->nullable();
             $table->integer('quantity')->default(1)->nullable();
             $table->boolean('public')->default(0);

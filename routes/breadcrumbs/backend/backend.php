@@ -162,3 +162,23 @@ Breadcrumbs::for('admin.filter.edit', function ($trail, $id) {
     $trail->parent('admin.filter.index');
     $trail->push('Редактирование фильтра', route('admin.filter.edit', $id));
 });
+
+/**
+ * Order
+ */
+Breadcrumbs::for('admin.order.index', function ($trail) {
+    $trail->parent('admin.dashboard');
+    $trail->push('Заказы', route('admin.order.index'));
+});
+Breadcrumbs::for('admin.order.show', function ($trail, $id) {
+    $trail->parent('admin.order.index');
+    $trail->push('Просмотр заказа', route('admin.order.show', $id));
+});
+Breadcrumbs::for('admin.order.create', function ($trail) {
+    $trail->parent('admin.order.index');
+    $trail->push('Создание заказа', route('admin.order.create'));
+});
+Breadcrumbs::for('admin.order.edit', function ($trail, $id) {
+    $trail->parent('admin.order.index');
+    $trail->push('Редактирование заказа', route('admin.order.edit', $id));
+});

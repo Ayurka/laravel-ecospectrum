@@ -530,6 +530,27 @@ input[type=file].file-loading,
   height: 30px;
 }
 
+.leader-dot{
+    display: block;
+    border-bottom: 1px dotted black;
+    position: relative;
+    height: 19px;
+}
+.leader-dot-left{
+    position: absolute;
+    left: 0;
+    bottom: -10px;
+    padding: 5px;
+    background-color: white;
+}
+.leader-dot-right{
+    position: absolute;
+    right: 0;
+    bottom: -10px;
+    padding: 5px;
+    background-color: white;
+}
+
 @media (min-width: 576px) {
   .file-zoom-dialog .modal-dialog {
     max-width: 500px;

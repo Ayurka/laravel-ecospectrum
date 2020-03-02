@@ -31,4 +31,9 @@ class Order extends Model
         return $this->belongsToMany('App\Models\Backend\Product', 'order_products', 'order_id', 'product_id')->withPivot('quantity');
     }
 
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
+
 }
