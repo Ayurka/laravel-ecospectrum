@@ -11,6 +11,7 @@ use App\Http\Controllers\Backend\News\NewsController;
 use App\Http\Controllers\Backend\Order\OrderController;
 use App\Http\Controllers\Backend\Page\PageCategoryController;
 use App\Http\Controllers\Backend\Page\PageController;
+use App\Http\Controllers\Backend\User\UserController;
 use App\Repositories\Backend\Catalog\AttributeRepository;
 use App\Repositories\Backend\Catalog\CategoryRepository;
 use App\Repositories\Backend\Catalog\FilterRepository;
@@ -20,6 +21,7 @@ use App\Repositories\Backend\News\NewsRepository;
 use App\Repositories\Backend\Order\OrderRepository;
 use App\Repositories\Backend\Page\PageCategoryRepository;
 use App\Repositories\Backend\Page\PageRepository;
+use App\Repositories\Backend\User\UserRepository;
 use Illuminate\Support\ServiceProvider;
 
 class BackendServiceProvider extends ServiceProvider
@@ -75,5 +77,10 @@ class BackendServiceProvider extends ServiceProvider
             ->when(OrderController::class)
             ->needs(CrudRepositoryInterface::class)
             ->give(OrderRepository::class);
+
+        $this->app
+            ->when(UserController::class)
+            ->needs(CrudRepositoryInterface::class)
+            ->give(UserRepository::class);
     }
 }

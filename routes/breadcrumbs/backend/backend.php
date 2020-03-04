@@ -182,3 +182,23 @@ Breadcrumbs::for('admin.order.edit', function ($trail, $id) {
     $trail->parent('admin.order.index');
     $trail->push('Редактирование заказа', route('admin.order.edit', $id));
 });
+
+/**
+ * User
+ */
+Breadcrumbs::for('admin.user.index', function ($trail) {
+    $trail->parent('admin.dashboard');
+    $trail->push('Пользователи', route('admin.user.index'));
+});
+Breadcrumbs::for('admin.user.show', function ($trail, $id) {
+    $trail->parent('admin.user.index');
+    $trail->push('Просмотр пользователя', route('admin.user.show', $id));
+});
+Breadcrumbs::for('admin.user.create', function ($trail) {
+    $trail->parent('admin.user.index');
+    $trail->push('Создание пользователя', route('admin.user.create'));
+});
+Breadcrumbs::for('admin.user.edit', function ($trail, $id) {
+    $trail->parent('admin.user.index');
+    $trail->push('Редактирование пользователя', route('admin.user.edit', $id));
+});

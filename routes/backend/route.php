@@ -13,3 +13,4 @@ require __DIR__.'/log.php';
 require __DIR__.'/menu.php';
 require __DIR__.'/news.php';
 require __DIR__.'/order.php';
+require __DIR__.'/user.php';

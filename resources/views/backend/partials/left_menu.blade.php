@@ -61,6 +61,12 @@
                 </a>
             </li>
             <li class="">
+                <a href="{{ route('admin.user.index') }}">
+                    <span class="pcoded-micon"><i class="icofont icofont-user"></i></span>
+                    <span class="pcoded-mtext">Пользователи</span>
+                </a>
+            </li>
+            <li class="">
                 <a href="{{ route('admin.news.index') }}">
                     <span class="pcoded-micon"><i class="icofont icofont-newspaper"></i></span>
                     <span class="pcoded-mtext">Новости</span>
