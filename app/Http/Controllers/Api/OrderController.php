@@ -9,6 +9,7 @@ use App\Http\Resources\OrderResource;
 use App\Models\Backend\Company;
 use App\Models\Backend\Order;
 use App\User;
+use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -35,6 +36,8 @@ class OrderController extends Controller
             }
             $order->products()->sync($result);
         });
+
+        $pdf = $this->createPDF();
 
         return response()->json([
             'status' => 'success'
@@ -106,5 +109,16 @@ class OrderController extends Controller
     {
         $user = User::where('id', auth()->user()->getAuthIdentifier())->first();
         return new OrderResource($user->order($request->id));
+    }
+
+    public function createPDF()
+    {
+        $data = [
+            'title' => 'First PDF for Medium',
+            'heading' => 'Hello from 99Points. Информация',
+            'content' => 'Lorem Ipsum - просто фиктивный текст индустрии печати и набора текста.'
+        ];
+
+        return PDF::loadView('pdf_view', $data)->save(public_path() . '/my_stored_file.pdf')->stream('download.pdf');
     }
 }

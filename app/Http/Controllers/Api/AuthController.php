@@ -10,6 +10,7 @@ use App\Http\Requests\Api\CompanyRequest;
 use App\Http\Resources\UserResource;
 use App\Models\Backend\Company;
 use App\User;
+use Fomvasss\Dadata\Facades\DadataSuggest;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -193,5 +194,34 @@ class AuthController extends Controller
         return response()->json([
             'status' => 'success'
         ], 200);
+    }
+
+    /**
+     * Get a company by Inn
+     *
+     * @param $inn
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getCompanyByInn($inn)
+    {
+        $result = DadataSuggest::partyById($inn, ["branch_type"=>"MAIN"]);
+
+        return response()->json([
+            'status' => 'success',
+            'result' => $result
+        ]);
+    }
+
+    /**
+     * User registration validation
+     *
+     * @param RegisterRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function userRegistrationValidation(RegisterRequest $request)
+    {
+        return response()->json([
+            'status' => 'success'
+        ]);
     }
 }

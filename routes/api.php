@@ -20,6 +20,8 @@ use Illuminate\Http\Request;
 Route::group(['middleware' => 'cors','namespace' => 'Api'], function () {
     Route::group(['prefix' => '/auth'], function () {
         Route::post('register', ['as' => 'register', 'uses' => 'AuthController@register']);
+        Route::post('userRegistrationValidation', ['as' => 'userRegistrationValidation', 'uses' => 'AuthController@userRegistrationValidation']);
+        Route::get('getCompanyByInn/{inn}', ['as' => 'companyByInn', 'uses' => 'AuthController@getCompanyByInn']);
         Route::post('login', ['as' => 'login', 'uses' => 'AuthController@login']);
         Route::group(['middleware' => 'auth.jwt'], function () {
             Route::get('user', ['as' => 'user', 'uses' => 'AuthController@user']);
