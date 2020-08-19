@@ -179,6 +179,7 @@ return [
         App\Providers\InputServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
+        App\Providers\HorizonServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Repositories\Backend\BackendServiceProvider::class,
         App\Providers\FormServiceProvider::class,

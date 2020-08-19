@@ -25,10 +25,10 @@ class RegisterRequest extends FormRequest
     {
         return [
             'name' => 'required|min:3',
-            'lastName' => 'required|min:3',
             'email' => 'required|email|unique:users',
             'phone' => 'required',
-            'password'  => 'required|min:4|confirmed',
+            'password'  => 'required|min:4',
+            'typeCompany' => 'required'
         ];
     }
 
@@ -42,15 +42,13 @@ class RegisterRequest extends FormRequest
         return [
             'name.required' => 'Необходимо указать имя',
             'name.min' => 'Длина имени должна быть не менее 3 символов',
-            'lastName.required' => 'Необходимо указать фамилию',
-            'lastName.min' => 'Длина фамилии должна быть не менее 3 символов',
             'email.required' => 'Необходимо указать email',
             'email.email' => 'Укажите корректную почту',
             'email.unique' => 'Такой email уже существует',
             'phone.required' => 'Необходимо указать телефон',
             'password.required' => 'Необходимо указать пароль',
             'password.min' => 'Длина пароля должна быть не менее 4 символов',
-            'password.confirmed' => 'Пароли не совпадают'
+            'typeCompany.required' => 'Тип компании отсутствует'
         ];
     }
 }

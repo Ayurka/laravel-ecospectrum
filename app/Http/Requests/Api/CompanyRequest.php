@@ -27,11 +27,22 @@ class CompanyRequest extends FormRequest
             'nameCompany' => 'required',
             'address' => 'required',
             'inn' => 'required',
-            'kpp' => 'required',
-            'nameBank' => 'required',
-            'bik' => 'required',
-            'paymentAccount' => 'required',
-            'correlationAccount' => 'required'
+            'kpp' => 'required'
+        ];
+    }
+
+    /**
+     * Получить сообщения об ошибках для определённых правил проверки.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'nameCompany.required' => 'Необходимо указать компанию',
+            'address.required' => 'Необходимо указать адрес',
+            'inn.required' => 'Необходимо указать ИНН',
+            'kpp.required' => 'Необходимо указать КПП'
         ];
     }
 }

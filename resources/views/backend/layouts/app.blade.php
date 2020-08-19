@@ -39,6 +39,9 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/backend.css') }}">
 
     <link rel="stylesheet" type="text/css" href="{{ asset('packages/adminty/assets/css/jquery.mCustomScrollbar.css') }}">
+
+    <script src="{{ asset('js/vue.js') }}"></script>
+    <script src="{{ asset('js/axios.js') }}"></script>
 </head>
 
 <body>

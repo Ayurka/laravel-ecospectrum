@@ -2,45 +2,22 @@
     <div class="col-lg-12">
         <div class="card">
             <div class="card-body">
-                <div class="form-group">
-                    {!! Form::label("title", 'Название', ['class' => 'control-label']) !!}
-                    {!! Form::text("title", null, ['class' => 'form-control']) !!}
-                </div>
-                <div class="form-group">
-                    {!! Form::label('slug', 'ЧПУ', ['class' => 'control-label']) !!}
-                    {!! Form::text('slug', null, ['class' => 'form-control']) !!}
-                </div>
-                <div class="form-group">
-                    {!! Form::label('parent_id', 'Категория') !!}
-                    {!! Form::select('parent_id', $categoryTree, null, ['class' => 'form-control']) !!}
-                </div>
-                <div class="form-group">
-                    <label for="select2">Фильтры</label>
-                    <select class="js-example-basic-multiple col-sm-12" id="select2" name="filters[]" multiple="multiple"></select>
-                </div>
-                <div class="form-group">
-                    {!! Form::label('description', 'Полное описание', ['class' => 'control-label']) !!}
-                    {!! Form::textarea("description", null, ['class' => 'form-control editor']) !!}
-                </div>
-                <div class="form-group">
-                    {!! Form::label('seo_title', 'SEO название страницы', ['class' => 'control-label']) !!}
-                    {!! Form::text("seo_title", null, ['class' => 'form-control']) !!}
-                </div>
-                <div class="form-group">
-                    {!! Form::label('seo_keywords', 'SEO ключевые слова', ['class' => 'control-label']) !!}
-                    {!! Form::text("seo_keywords", null, ['class' => 'form-control']) !!}
-                </div>
-                <div class="form-group">
-                    {!! Form::label('seo_description', 'SEO описание', ['class' => 'control-label']) !!}
-                    {!! Form::textarea("seo_description", null, ['class' => 'form-control']) !!}
-                </div>
-                <div class="form-group">
-                    {!! Form::label('images', 'Изображения', ['class' => 'control-label']) !!}
-                    {!! Form::images('images[]', isset($preview) ? $preview : null, ['id' => 'images', 'multiple' => true]) !!}
-                </div>
-                <div class="form-group">
-                    {!! Form::label('public', 'Публикация', ['style' => 'display: block']) !!}
-                    {!! Form::checkbox('public', null, null, ['class' => 'js-success']) !!}
+                <ul class="nav nav-tabs tabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#tab-general" role="tab">Общие</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#tab-filter" role="tab">Фильтр</a>
+                    </li>
+                </ul>
+                <!-- Tab panes -->
+                <div class="tab-content tabs card-block">
+                    <div class="tab-pane active" id="tab-general" role="tabpanel">
+                        @include('backend.catalog.category_form.tabs.tab_general')
+                    </div>
+                    <div class="tab-pane" id="tab-filter" role="tabpanel">
+                        @include('backend.catalog.category_form.tabs.tab_filter')
+                    </div>
                 </div>
             </div>
         </div>

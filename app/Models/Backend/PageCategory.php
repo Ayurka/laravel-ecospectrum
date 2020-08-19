@@ -97,7 +97,8 @@ class PageCategory extends Model
      */
     public function images()
     {
-        return $this->morphMany('App\Models\Backend\Image', 'imagetable')->where('primary', 0)->orderBy('position', 'asc');
+        return $this->morphMany('App\Models\Backend\Image', 'imagetable')
+            ->orderBy('position', 'asc');
     }
 
     /**
@@ -137,20 +138,23 @@ class PageCategory extends Model
         return $this->generatePath();
     }
 
+    /**
+     * @return void
+     */
     public function updateDescendantsPaths()
     {
-        // Получаем всех потомков в древовидном порядке
+        /** Получаем всех потомков в древовидном порядке */
         $descendants = $this->descendants()->defaultOrder()->get();
 
-        // Данный метод заполняет отношения parent и children
+        /** Данный метод заполняет отношения parent и children */
         $descendants->push($this)->linkNodes()->pop();
 
         foreach ($descendants as $key => $model) {
 
-            // обновляем путь категории
+            /** обновляем путь категории */
             $model->url()->update(['url' => $model->getUrl()]);
 
-            // обновляем пути страниц
+            /** обновляем пути страниц */
             foreach ($model->pages as $page) {
                 $page->url()->update(['url' => $model->getUrl() . '/' . $page->slug]);
             }
@@ -185,8 +189,7 @@ class PageCategory extends Model
         });
 
         static::saved(function (self $model) {
-            // Данная переменная нужна для того, чтобы потомки не начали вызывать
-            // метод, т.к. для них путь также изменится
+            /** Данная переменная нужна для того, чтобы потомки не начали вызывать метод, т.к. для них путь также изменится */
             static $updating = false;
 
             if ( ! $updating && $model->isDirty('slug')) {
@@ -198,6 +201,7 @@ class PageCategory extends Model
                 $updating = false;
             }
 
+            /** обновляем путь страницы, если нет потомков */
             $model->updatePagePaths();
         });
     }

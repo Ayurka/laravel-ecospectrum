@@ -9,14 +9,12 @@ use App\Http\Controllers\Controller;
 class FilterDeleteController extends Controller
 {
     /**
-     * Handle the incoming request.
-     *
-     * @param Request  $request
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function __invoke(Request $request)
+    public function __invoke($id)
     {
-        Filter::destroy($request->get('id'));
+        Filter::destroy($id);
 
         return response()->json([
             'status' => 'success',

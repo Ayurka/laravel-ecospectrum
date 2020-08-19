@@ -4,6 +4,7 @@ namespace App\Repositories\Backend\Catalog;
 
 use App\Models\Backend\Category;
 use App\Models\Backend\Filter;
+use App\Models\Backend\FilterGroup;
 use App\Repositories\Backend\CrudRepositoryInterface;
 use Illuminate\Support\Arr;
 
@@ -68,6 +69,24 @@ class CategoryRepository implements CrudRepositoryInterface
         return response()->json($data);
     }
 
+    public function getFilterGroups ()
+    {
+        $data = [];
+
+        $filterGroups = FilterGroup::all();
+
+        if($filterGroups) {
+            foreach($filterGroups as $group){
+                $data[] = [
+                    'id' => $group->id,
+                    'text' => $group->title
+                ];
+            }
+        }
+
+        return response()->json($data);
+    }
+
     public function getDataSelect($category)
     {
         $data = [];
@@ -77,6 +96,23 @@ class CategoryRepository implements CrudRepositoryInterface
                 $data[] = [
                     'id' => $filter->id,
                     'text' => $filter->filterGroup->title . ' -> ' . $filter->title,
+                    'selected' => $this->isSelected($filter->id, $category->getPivotFilters)
+                ];
+            }
+        }
+
+        return response()->json($data);
+    }
+
+    public function getFilterGroupSelected($category)
+    {
+        $data = [];
+
+        if(FilterGroup::with('getPivotCategories')->get()){
+            foreach(FilterGroup::with('getPivotCategories')->get() as $filter){
+                $data[] = [
+                    'id' => $filter->id,
+                    'text' => $filter->title,
                     'selected' => $this->isSelected($filter->id, $category->getPivotFilters)
                 ];
             }
@@ -131,6 +167,111 @@ class CategoryRepository implements CrudRepositoryInterface
         }
 
         $model->url()->delete();
+    }
+
+    public function createOrUpdateFilters($request, $categoryId)
+    {
+        if ($request->has('groupList')) {
+            foreach ($request->groupList as $group) {
+                if (isset($group['groupNew'])) {
+                    $filterGroup = FilterGroup::create([
+                        'title' => $group['groupNew'],
+                        'category_id' => $categoryId,
+                        'position' => 0
+                    ]);
+                    foreach ($group['paramsNew'] as $item) {
+                        Filter::create([
+                            'filter_group_id' => $filterGroup->id,
+                            'title' => $item,
+                            'position' => 0
+                        ]);
+                    }
+                } else {
+                    $filterGroup = FilterGroup::findOrFail($group['groupOld']['id']);
+                    $filterGroup->update([
+                        'title' => $group['groupOld']['name'],
+                        'category_id' => $categoryId,
+                        'position' => 0
+                    ]);
+                    if (isset($group['paramsNew'])) {
+                        foreach ($group['paramsNew'] as $item) {
+                            Filter::create([
+                                'filter_group_id' => $filterGroup->id,
+                                'title' => $item,
+                                'position' => 0
+                            ]);
+                        }
+                    } else {
+                        foreach ($group['paramsOld'] as $item) {
+                            $filter = Filter::findOrFail($item['id']);
+                            $filter->update([
+                                'filter_group_id' => $filterGroup->id,
+                                'title' => $item['name'],
+                                'position' => 0
+                            ]);
+                        }
+                    }
+                }
+            }
+        }
+        /*if($data->get('attr_new')){
+            foreach ($data->get('attr_new') as $item) {
+                Filter::create([
+                    'filter_group_id' => $id,
+                    'title' => $item['value'],
+                    'position' => $item['position']
+                ]);
+            }
+        }*/
+    }
+
+    public function updateFilters($request, $id)
+    {
+        /*if($data->get('attr_old')) {
+            foreach ($data->get('attr_old') as $item) {
+                $attribute = $this->showFilter($item['id']);
+                $attribute->update([
+                    'filter_group_id' => $id,
+                    'title' => $item['value'],
+                    'position' => $item['position']
+                ]);
+            }
+        }*/
+    }
+
+    public function getFilters($category)
+    {
+        $data = [];
+
+        if (count($category->getGroupsFilters) > 0) {
+            foreach ($category->getGroupsFilters as $filterGroup) {
+                $data[] = [
+                    'groupName' => [
+                        'id' => $filterGroup->id,
+                        'type' => 'old',
+                        'name' => $filterGroup->title
+                    ],
+                    'params' => $this->getParams($filterGroup->filters)
+                ];
+            }
+        }
+
+        return response()->json($data)->content();
+    }
+
+    public function getParams($params)
+    {
+        $data = [];
+
+        foreach ($params as $param) {
+            $data[] = [
+                'id' => $param->id,
+                'type' => 'old',
+                'name' => $param->title
+            ];
+        }
+
+        return $data;
     }
 
 }

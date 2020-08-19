@@ -9,7 +9,7 @@ class Company extends Model
     protected $table = 'company';
 
     protected $fillable = [
-        'user_id', 'nameCompany', 'address', 'inn', 'kpp', 'nameBank', 'bik', 'paymentAccount', 'correlationAccount'
+        'user_id', 'name_company', 'address', 'inn', 'kpp', 'ogrn', 'ogrnip'
     ];
 
     /**

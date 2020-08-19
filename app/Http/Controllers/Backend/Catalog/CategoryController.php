@@ -6,6 +6,7 @@ use App\Http\Requests\Backend\CategoryRequest;
 use App\Repositories\Backend\CrudRepositoryInterface;
 use App\Services\ImageService;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
@@ -36,7 +37,7 @@ class CategoryController extends Controller
     public function create()
     {
         $categoryTree = $this->model->getCategoryTree();
-        $dataSelect = $this->model->getAllFilters()->content();
+        $dataSelect = $this->model->getFilterGroups()->content();
 
         return view('backend.catalog.category_form.create', compact('categoryTree', 'dataSelect'));
     }
@@ -56,7 +57,7 @@ class CategoryController extends Controller
 
         $image->setImages($model, $request);
 
-        $model->getPivotFilters()->sync($request->get('filters'));
+        //$model->getPivotFilters()->sync($request->get('filters'));
 
         return redirect()->route('admin.category.index')->with('flash_success', 'Категория успешно создана');
     }
@@ -73,22 +74,24 @@ class CategoryController extends Controller
         $category = $this->model->show($id);
         $categoryTree = $this->model->getCategoryTree();
 
-        $dataSelect = $this->model->getDataSelect($category)->content();
-
+        //$dataSelect = $this->model->getFilterGroupSelected($category)->content();
+        $dataSelect = '';;
         $preview = $image->getConfigImages($category->images);
 
-        return view('backend.catalog.category_form.edit', compact('category','categoryTree', 'dataSelect', 'preview'));
+        $filters = $this->model->getFilters($category);
+
+        return view('backend.catalog.category_form.edit', compact('category','filters', 'categoryTree', 'dataSelect', 'preview'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param CategoryRequest $request
+     * @param Request $request
      * @param  int  $id
      * @param ImageService $image
      * @return \Illuminate\Http\Response
      */
-    public function update(CategoryRequest $request, $id, ImageService $image)
+    public function update(Request $request, $id, ImageService $image)
     {
         $model = $this->model->update($request->all(), $id);
 
@@ -96,7 +99,7 @@ class CategoryController extends Controller
 
         $image->setImages($model, $request);
 
-        $model->getPivotFilters()->sync($request->get('filters'));
+        $this->model->createOrUpdateFilters($request, $model->id);
 
         return redirect()->route('admin.category.index')->with('flash_success', 'Категория успешно обновлена');
     }

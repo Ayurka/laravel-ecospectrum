@@ -4,63 +4,58 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\OrderRequest;
+use App\Http\Requests\Api\RegisterRequest;
 use App\Http\Resources\OrderCollection;
 use App\Http\Resources\OrderResource;
 use App\Models\Backend\Company;
-use App\Models\Backend\Order;
+use App\Repositories\Frontend\AuthRepository;
+use App\Repositories\Frontend\OrderRepository;
 use App\User;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
     /**
-     * @param OrderRequest $request
+     * Создаем пользователя и заказ
      *
+     * @param Request $request
+     * @param OrderRepository $orderRepository
+     * @param AuthRepository $authRepository
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(OrderRequest $request)
+    public function storeGuest(Request $request, OrderRepository $orderRepository, AuthRepository $authRepository)
     {
-        $user = User::where('id', auth()->user()->getAuthIdentifier())->first();
+        $random = str_shuffle('abcdefghjklmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ234567890!$%^&!$%^&');
+        $password = substr($random, 0, 6);
+        $request->merge(['password' => $password]);
 
-        DB::transaction(function () use ($user, $request) {
+        $user = $authRepository->storeUserAndCompany($request);
 
-            $this->saveCompany($user, $request);
-
-            $order = $this->saveOrder($user, $request);
-
-            $result = [];
-            foreach($request->get('products') as $item){
-                $result[$item['id']] = ['quantity' => $item['quantity']];
-            }
-            $order->products()->sync($result);
-        });
-
-        $pdf = $this->createPDF();
+        $orderRepository->create($request, $user);
 
         return response()->json([
-            'status' => 'success'
-        ], 200);
-
+            'status' => 'success',
+            'password' => $password
+        ], 201);
     }
 
     /**
      * Создаем заказ
      *
-     * @param $user
-     * @param $request
-     *
-     * @return Order
+     * @param Request $request
+     * @param OrderRepository $orderRepository
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function saveOrder($user, $request)
+    public function storeAuth(Request $request, OrderRepository $orderRepository)
     {
-        return $user->orders()->create([
-            'quantity' => $request->get('quantity'),
-            'total' => $request->get('total'),
-            'delivery_address' => 'asfadsfad',
-            'status' => Order::STATUS[1]
-        ]);
+        $user = User::where('id', auth()->user()->getAuthIdentifier())->first();
+
+        $orderRepository->create($request, $user);
+
+        return response()->json([
+            'status' => 'success',
+        ], 201);
     }
 
     /**
@@ -79,11 +74,7 @@ class OrderController extends Controller
                 'nameCompany' => $request->get('nameCompany'),
                 'address' => $request->get('address'),
                 'inn' => $request->get('inn'),
-                'kpp' => $request->get('kpp'),
-                'nameBank' => $request->get('nameBank'),
-                'bik' => $request->get('bik'),
-                'paymentAccount' => $request->get('paymentAccount'),
-                'correlationAccount' => $request->get('correlationAccount')
+                'kpp' => $request->get('kpp')
             ]);
     }
 

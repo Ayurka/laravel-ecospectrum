@@ -9,7 +9,7 @@ class Order extends Model
     protected $table = 'orders';
 
     protected $fillable = [
-        'user_id', 'quantity', 'total', 'delivery_address', 'status'
+        'user_id', 'quantity', 'total', 'status'
     ];
 
     const STATUS = [

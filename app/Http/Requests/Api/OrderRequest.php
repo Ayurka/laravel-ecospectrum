@@ -29,11 +29,7 @@ class OrderRequest extends FormRequest
             'nameCompany' => 'required',
             'address' => 'required',
             'inn' => 'required',
-            'kpp' => 'required',
-            'nameBank' => 'required',
-            'bik' => 'required',
-            'paymentAccount' => 'required',
-            'correlationAccount' => 'required'
+            'kpp' => 'required'
         ];
     }
 }

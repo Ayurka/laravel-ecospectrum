@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Exceptions\InnException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\RegisterRequest;
 use App\Http\Requests\Api\AccountRequest;
@@ -9,33 +10,56 @@ use App\Http\Requests\Api\PasswordRequest;
 use App\Http\Requests\Api\CompanyRequest;
 use App\Http\Resources\UserResource;
 use App\Models\Backend\Company;
+use App\Models\Backend\Individual;
+use App\Models\Backend\LegalEntity;
+use App\Repositories\Frontend\AuthRepository;
 use App\User;
 use Fomvasss\Dadata\Facades\DadataSuggest;
+use http\Env\Response;
 use Illuminate\Http\Request;
-use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\DB;
+use Tymon\JWTAuth\JWTAuth;
 
 class AuthController extends Controller
 {
+    private $company;
     /**
-     * Регистрация нового пользователя
+     * @var JWTAuth
+     */
+    private $auth;
+
+    /**
+     * AuthController constructor.
+     * @param JWTAuth $JWTAuth
+     */
+    public function __construct(JWTAuth $JWTAuth)
+    {
+        $this->auth = $JWTAuth;
+    }
+
+    /**
+     * Регистрация нового пользователя и компании
      *
      * @param RegisterRequest $request
-     * @param User $user
-     *
+     * @param AuthRepository $repository
      * @return \Illuminate\Http\JsonResponse
      */
-    public function register(RegisterRequest $request, User $user)
+    public function register(RegisterRequest $request, AuthRepository $repository)
     {
-        $user->create([
-            'name' => $request->get('name'),
-            'lastName' => $request->get('lastName'),
-            'email' => $request->get('email'),
-            'phone' => $request->get('phone'),
-            'password' => bcrypt($request->get('password'))
-        ]);
+        $repository->storeUserAndCompany($request);
+
+        if (!$token = $this->auth->attempt($request->only(['email', 'password']))) {
+            return response()->json([
+                'status' => 'error',
+                'error' => 'invalid.credentials',
+                'msg' => 'Invalid Credentials.'
+            ], 401);
+        }
 
         return response()->json([
-            'status' => 'success'
+            'status' => 'success',
+            'token' => $token,
+            'user' => new UserResource(User::where('id', auth()->user()->getAuthIdentifier())->first())
         ], 200);
     }
 
@@ -43,12 +67,11 @@ class AuthController extends Controller
      * Get a JWT via given credentials.
      *
      * @param Request $request
-     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function login(Request $request)
     {
-        if (!$token = JWTAuth::attempt($request->only(['email', 'password']))) {
+        if (!$token = $this->auth->attempt($request->only(['email', 'password']))) {
             return response()->json([
                 'status' => 'error',
                 'error' => 'invalid.credentials',
@@ -84,7 +107,7 @@ class AuthController extends Controller
      */
     public function logout()
     {
-        JWTAuth::invalidate();
+        $this->auth->invalidate();
 
         return response()->json([
             'status' => 'success',
@@ -99,7 +122,7 @@ class AuthController extends Controller
      */
     public function refresh()
     {
-        if ($token = JWTAuth::refresh()) {
+        if ($token = $this->auth->refresh()) {
             return response()
                 ->json(['status' => 'success'], 200)
                 ->header('Authorization', $token);
@@ -120,7 +143,6 @@ class AuthController extends Controller
 
         $user->update([
             'name' => $request->get('name'),
-            'lastName' => $request->get('lastName'),
             'phone' => $request->get('phone')
         ]);
 
@@ -129,10 +151,7 @@ class AuthController extends Controller
             if (!$isEmail) {
                 $user->update(['email' => $request->get('email')]);
 
-                return response()->json([
-                    'status' => 'success',
-                    'user' => new UserResource(User::where('id', auth()->user()->getAuthIdentifier())->first())
-                ], 200);
+                return new UserResource(User::where('id', auth()->user()->getAuthIdentifier())->first());
             }
 
             return response()->json([
@@ -141,10 +160,7 @@ class AuthController extends Controller
             ], 500);
         }
 
-        return response()->json([
-            'status' => 'success',
-            'user' => new UserResource(User::where('id', auth()->user()->getAuthIdentifier())->first())
-        ], 200);
+        return new UserResource(User::where('id', auth()->user()->getAuthIdentifier())->first());
     }
 
     /**
@@ -170,45 +186,57 @@ class AuthController extends Controller
     /**
      * Изменение компании
      *
-     * @param CompanyRequest $request
+     * @param Request $request
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function editCompany(CompanyRequest $request)
+    public function editCompany(Request $request)
     {
         $user = User::where('id', auth()->user()->getAuthIdentifier())->first();
 
-        Company::updateOrCreate(
-            ['user_id' => $user->id],
-            [
-            'nameCompany' => $request->get('nameCompany'),
-            'address' => $request->get('address'),
-            'inn' => $request->get('inn'),
-            'kpp' => $request->get('kpp'),
-            'nameBank' => $request->get('nameBank'),
-            'bik' => $request->get('bik'),
-            'paymentAccount' => $request->get('paymentAccount'),
-            'correlationAccount' => $request->get('correlationAccount')
-        ]);
+        if ($user->type_company === 'ИП') {
+            $user->usertable()->update([
+                'name_company' => $request->get('nameCompany'),
+                'address' => $request->get('address'),
+                'inn' => $request->get('inn'),
+                'ogrnip' => $request->get('ogrnip')
+            ]);
+        } else {
+            $user->usertable()->update([
+                'name_company' => $request->get('nameCompany'),
+                'address' => $request->get('address'),
+                'inn' => $request->get('inn'),
+                'kpp' => $request->get('kpp'),
+                'ogrn' => $request->get('ogrn')
+            ]);
+        }
 
-        return response()->json([
-            'status' => 'success'
-        ], 200);
+        return new UserResource($user);
     }
 
     /**
-     * Get a company by Inn
+     * Get a company by INN
      *
-     * @param $inn
+     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getCompanyByInn($inn)
+    public function getCompanyByInn(Request $request)
     {
-        $result = DadataSuggest::partyById($inn, ["branch_type"=>"MAIN"]);
+        if ($request->get('type') === 'ooo') {
+            $request->validate([
+                'inn' => 'required|max:10|min:10',
+            ]);
+        } else {
+            $request->validate([
+                'inn' => 'required|max:12|min:12',
+            ]);
+        }
+
+        $result = DadataSuggest::partyById($request->get('inn'), ["branch_type"=>"MAIN"]);
 
         return response()->json([
             'status' => 'success',
-            'result' => $result
+            'company' => $result
         ]);
     }
 

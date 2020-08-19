@@ -19,10 +19,6 @@
     <select class="js-example-basic-multiple col-sm-12" id="select2" name="categories[]" multiple="multiple"></select>
 </div>
 <div class="form-group">
-    <label for="select2">Фильтры</label>
-    <select class="filters-multiple col-sm-12" id="select2" name="filters[]" multiple="multiple"></select>
-</div>
-<div class="form-group">
     {!! Form::label('public', 'Публикация', ['style' => 'display: block']) !!}
     {!! Form::checkbox('public', null, null, ['class' => 'js-success']) !!}
 </div>
@@ -43,10 +39,6 @@
         $(function(){
             $(".js-example-basic-multiple").select2({
                 data: {!! $dataSelect !!}
-            });
-
-            $(".filters-multiple").select2({
-                data: {!! $filters !!}
             });
         });
     </script>

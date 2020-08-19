@@ -15,11 +15,11 @@ class UserResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'typeCompany' => $this->type_company,
             'name' => $this->name,
-            'lastName' => $this->lastName,
             'email' => $this->email,
             'phone' => $this->phone,
-            'company' => $this->company ? $this->company : ''
+            'company' => $this->type_company === 'ИП' ? new IndividualResource($this->usertable) : new LegalEntityResource($this->usertable)
         ];
     }
 }

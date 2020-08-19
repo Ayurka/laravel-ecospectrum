@@ -18,7 +18,6 @@ class CreateOrdersTable extends Migration
             $table->integer('user_id');
             $table->integer('quantity');
             $table->decimal('total', 15, 0);
-            $table->string('delivery_address');
             $table->string('status');
             $table->timestamps();
         });

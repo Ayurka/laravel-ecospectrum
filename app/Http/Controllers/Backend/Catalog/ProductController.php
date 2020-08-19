@@ -66,7 +66,7 @@ class ProductController extends Controller
         $this->model->createUrl($model->id);
 
         $model->getPivotCategories()->sync($request->get('categories'));
-        $model->getPivotFilters()->sync($request->get('filters'));
+        //$model->getPivotFilters()->sync($request->get('filters'));
         $this->model->pivotAttributeProduct($request, $model);
 
         $image->setImages($model, $request);
@@ -88,7 +88,6 @@ class ProductController extends Controller
         $categoryTree = $this->model->getCategoryTree();
 
         $dataSelect = $this->model->getDataSelect($product)->content();
-        $filters = $this->model->getDataFilters($product)->content();
         $isAttributes = $this->model->isAttributes();
         $attributeGroups = $this->model->getAttributeGroups();
         $attributeGroupsJson = response()->json($attributeGroups)->content();
@@ -99,7 +98,6 @@ class ProductController extends Controller
             'product',
             'categoryTree',
             'dataSelect',
-            'filters',
             'attributeGroups',
             'attributeGroupsJson',
             'preview',
@@ -123,10 +121,14 @@ class ProductController extends Controller
         $this->model->updateUrl($id);
 
         $model->getPivotCategories()->sync($request->get('categories'));
-        $model->getPivotFilters()->sync($request->get('filters'));
         $this->model->pivotAttributeProduct($request, $model);
-
         $image->setImages($model, $request);
+
+        if ($request->has('filters')) {
+            // Удаляем элементы из массива, равные null
+            $resultFilters = array_diff($request->get('filters'), array(null));
+            $model->getPivotFilters()->sync($resultFilters);
+        }
 
         return redirect()->route('admin.product.index')->with('flash_success', 'Товар успешно обновлен');
     }

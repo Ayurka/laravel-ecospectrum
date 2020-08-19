@@ -24,7 +24,6 @@
                             <tr>
                                 <th>#</th>
                                 <th>Имя</th>
-                                <th>Фамилия</th>
                                 <th>E-mail</th>
                                 <th>Телефон</th>
                                 <th>Дата создания</th>
@@ -36,7 +35,6 @@
                                 <tr>
                                     <td>{{ $user->id }}</td>
                                     <td>{{ $user->name }}</td>
-                                    <td>{{ $user->lastName }}</td>
                                     <td>{{ $user->email }}</td>
                                     <td>{{ $user->phone }}</td>
                                     <td>{{ $user->created_at }}</td>

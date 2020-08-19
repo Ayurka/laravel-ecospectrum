@@ -7,10 +7,6 @@
                     {!! Form::text("name", null, ['class' => 'form-control']) !!}
                 </div>
                 <div class="form-group">
-                    {!! Form::label("lastName", 'Фамилия', ['class' => 'control-label']) !!}
-                    {!! Form::text("lastName", null, ['class' => 'form-control']) !!}
-                </div>
-                <div class="form-group">
                     {!! Form::label("email", 'E-mail', ['class' => 'control-label']) !!}
                     {!! Form::text("email", null, ['class' => 'form-control']) !!}
                 </div>
@@ -47,22 +43,6 @@
                 <div class="form-group">
                     {!! Form::label("kpp", 'КПП', ['class' => 'control-label']) !!}
                     {!! Form::text("company[kpp]", isset($user) ? $user->company->kpp : null, ['class' => 'form-control']) !!}
-                </div>
-                <div class="form-group">
-                    {!! Form::label("nameBank", 'Наименование банка', ['class' => 'control-label']) !!}
-                    {!! Form::text("company[nameBank]", isset($user) ? $user->company->nameBank : null, ['class' => 'form-control']) !!}
-                </div>
-                <div class="form-group">
-                    {!! Form::label("bik", 'БИК', ['class' => 'control-label']) !!}
-                    {!! Form::text("company[bik]", isset($user) ? $user->company->bik : null, ['class' => 'form-control']) !!}
-                </div>
-                <div class="form-group">
-                    {!! Form::label("paymentAccount", 'Расчетный счет', ['class' => 'control-label']) !!}
-                    {!! Form::text("company[paymentAccount]", isset($user) ? $user->company->paymentAccount : null, ['class' => 'form-control']) !!}
-                </div>
-                <div class="form-group">
-                    {!! Form::label("correlationAccount", 'Кор. счет', ['class' => 'control-label']) !!}
-                    {!! Form::text("company[correlationAccount]", isset($user) ? $user->company->correlationAccount : null, ['class' => 'form-control']) !!}
                 </div>
             </div>
         </div>

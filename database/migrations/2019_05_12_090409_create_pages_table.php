@@ -22,7 +22,7 @@ class CreatePagesTable extends Migration
             $table->string('seo_keywords')->nullable();
             $table->text('seo_description')->nullable();
             $table->string('slug')->nullable();
-            $table->bigInteger('category_id')->default(0);
+            $table->bigInteger('category_id')->default(0)->unsigned();
             $table->boolean('public')->default(0);
             $table->integer('sort')->default(0);
             $table->timestamps();

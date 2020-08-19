@@ -17,10 +17,6 @@
                             <span class="leader-dot-right">{{ $user->name }}</span>
                         </p>
                         <p class="leader-dot">
-                            <span class="leader-dot-left">Фамилия</span>
-                            <span class="leader-dot-right">{{ $user->lastName }}</span>
-                        </p>
-                        <p class="leader-dot">
                             <span class="leader-dot-left">E-mail</span>
                             <span class="leader-dot-right">{{ $user->email }}</span>
                         </p>
@@ -50,22 +46,6 @@
                         <p class="leader-dot">
                             <span class="leader-dot-left">КПП</span>
                             <span class="leader-dot-right">{{ $user->company->kpp }}</span>
-                        </p>
-                        <p class="leader-dot">
-                            <span class="leader-dot-left">Наименование банка</span>
-                            <span class="leader-dot-right">{{ $user->company->nameBank }}</span>
-                        </p>
-                        <p class="leader-dot">
-                            <span class="leader-dot-left">БИК</span>
-                            <span class="leader-dot-right">{{ $user->company->bik }}</span>
-                        </p>
-                        <p class="leader-dot">
-                            <span class="leader-dot-left">Расчетный счет</span>
-                            <span class="leader-dot-right">{{ $user->company->paymentAccount }}</span>
-                        </p>
-                        <p class="leader-dot">
-                            <span class="leader-dot-left">Кор. счет</span>
-                            <span class="leader-dot-right">{{ $user->company->correlationAccount }}</span>
                         </p>
                     </div>
                 </div>

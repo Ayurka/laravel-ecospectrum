@@ -6,4 +6,5 @@ Route::post('category/sort', ['as' => 'category.sort', 'uses' => 'Backend\Catalo
 Route::resource('attribute', 'Backend\Catalog\AttributeController');
 Route::get('attributeDelete', ['as' => 'attributeDelete', 'uses' => 'Backend\Catalog\AttributeDeleteController@__invoke']);
 Route::resource('filter', 'Backend\Catalog\FilterController');
-Route::get('filterDelete', ['as' => 'filterDelete', 'uses' => 'Backend\Catalog\FilterDeleteController@__invoke']);
+Route::delete('filterDelete/{id}', ['as' => 'filterDelete', 'uses' => 'Backend\Catalog\FilterDeleteController@__invoke']);
+Route::delete('filterGroupDelete/{id}', ['as' => 'filterGroupDelete', 'uses' => 'Backend\Catalog\FilterGroupDeleteController@__invoke']);

@@ -4,10 +4,11 @@ namespace App\Models\Backend;
 
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
+use Laravel\Scout\Searchable;
 
 class Product extends Model
 {
-    use Sluggable;
+    use Sluggable, Searchable;
 
     protected $table = 'products';
 
@@ -71,21 +72,62 @@ class Product extends Model
             ->withPivot('text');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
+     */
     public function url()
     {
         return $this->morphOne('App\Models\Backend\Url', 'urltable');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
+     */
     public function image()
     {
-        return $this->morphOne('App\Models\Backend\Image', 'imagetable')
-            ->where('position', 0)
-            ->select('small');
+        return $this->morphOne('App\Models\Backend\Image', 'imagetable');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
     public function images()
     {
         return $this->morphMany('App\Models\Backend\Image', 'imagetable')
             ->orderBy('position', 'asc');
+    }
+
+    /**
+     * Get the index name for the model.
+     *
+     * @return string
+     */
+    public function searchableAs()
+    {
+        return 'products';
+    }
+
+    /**
+     * Get the indexable data array for the model.
+     *
+     * @return array
+     */
+    public function toSearchableArray()
+    {
+        $array = $this->toArray();
+
+        return array('id' => $array['id'], 'title' => $array['title']);
+    }
+
+    /**
+     * Получаем предков для хлебных крошек
+     *
+     * @return mixed
+     */
+    public function getAncestorsBreadcrumbs()
+    {
+        $collection = $this->getCategory->ancestors()->defaultOrder()->get();
+        $collection->push($this->getCategory);
+        return $collection;
     }
 }

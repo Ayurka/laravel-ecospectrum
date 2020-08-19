@@ -25,7 +25,6 @@ class AccountRequest extends FormRequest
     {
         return [
             'name' => 'required|min:3',
-            'lastName' => 'required|min:3',
             'email' => 'required|email',
             'phone' => 'required'
         ];
@@ -41,8 +40,6 @@ class AccountRequest extends FormRequest
         return [
             'name.required' => 'Необходимо указать имя',
             'name.min' => 'Длина имени должна быть не менее 3 символов',
-            'lastName.required' => 'Необходимо указать фамилию',
-            'lastName.min' => 'Длина фамилии должна быть не менее 3 символов',
             'email.required' => 'Необходимо указать email',
             'email.email' => 'Укажите корректную почту',
             'phone.required' => 'Необходимо указать телефон'

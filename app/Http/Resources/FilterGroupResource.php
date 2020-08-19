@@ -3,9 +3,8 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Storage;
 
-class Product extends JsonResource
+class FilterGroupResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,11 +17,7 @@ class Product extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'slug' => $this->slug,
-            'price' => $this->price,
-            'images' => $this->images,
-            'description' => $this->description,
-            'attributes' => $this->getPivotAttributes
+            'filters' => FilterResource::collection($this->filters)
         ];
     }
 }

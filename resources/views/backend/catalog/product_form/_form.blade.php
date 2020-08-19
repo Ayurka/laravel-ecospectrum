@@ -17,6 +17,9 @@
                             <li class="nav-item">
                                 <a class="nav-link" data-toggle="tab" href="#tab-image" role="tab">Изображения</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#tab-filter" role="tab">Фильтр</a>
+                            </li>
                         </ul>
                         <!-- Tab panes -->
                         <div class="tab-content tabs card-block">
@@ -31,6 +34,9 @@
                             </div>
                             <div class="tab-pane" id="tab-image" role="tabpanel">
                                 @include('backend.catalog.product_form.tabs.tab_image')
+                            </div>
+                            <div class="tab-pane" id="tab-filter" role="tabpanel">
+                                @include('backend.catalog.product_form.tabs.tab_filter')
                             </div>
                         </div>
                     </div>

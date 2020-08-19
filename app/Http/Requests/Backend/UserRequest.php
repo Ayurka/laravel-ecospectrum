@@ -25,18 +25,13 @@ class UserRequest extends FormRequest
     {
         return [
             'name' => 'required|min:3',
-            'lastName' => 'required|min:3',
             'email' => 'required|email|max:255|unique:users,email,' . $this->user,
             'phone' => 'required',
             'password'  => 'required|min:4|confirmed',
             'company.nameCompany' => 'required',
             'company.address' => 'required',
             'company.inn' => 'required',
-            'company.kpp' => 'required',
-            'company.nameBank' => 'required',
-            'company.bik' => 'required',
-            'company.paymentAccount' => 'required',
-            'company.correlationAccount' => 'required',
+            'company.kpp' => 'required'
         ];
     }
 
@@ -50,8 +45,6 @@ class UserRequest extends FormRequest
         return [
             'name.required' => 'Необходимо указать имя',
             'name.min' => 'Длина имени должна быть не менее 3 символов',
-            'lastName.required' => 'Необходимо указать фамилию',
-            'lastName.min' => 'Длина фамилии должна быть не менее 3 символов',
             'email.required' => 'Необходимо указать email',
             'email.email' => 'Укажите корректную почту',
             'email.unique' => 'Такой email уже существует',
@@ -62,11 +55,7 @@ class UserRequest extends FormRequest
             'company.nameCompany.required' => 'Необходимо указать наименование организации',
             'company.address.required' => 'Необходимо указать юридический адрес',
             'company.inn.required' => 'Необходимо указать ИНН',
-            'company.kpp.required' => 'Необходимо указать КПП',
-            'company.nameBank.required' => 'Необходимо указать наименование банка',
-            'company.bik.required' => 'Необходимо указать БИК',
-            'company.paymentAccount.required' => 'Необходимо указать расчетный счет',
-            'company.correlationAccount.required' => 'Необходимо указать кор. счет',
+            'company.kpp.required' => 'Необходимо указать КПП'
         ];
     }
 }
